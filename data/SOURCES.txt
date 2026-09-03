@@ -1,0 +1,6 @@
+Pride and Prejudice is Project Gutenberg ebook 1342.
+Emma is Project Gutenberg ebook 158.
+The files in this folder are the novels after the Gutenberg header and footer
+were cut off, so the counts start at the story.
+https://www.gutenberg.org/cache/epub/1342/pg1342.txt
+https://www.gutenberg.org/cache/epub/158/pg158.txt
