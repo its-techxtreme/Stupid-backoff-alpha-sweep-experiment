@@ -1,6 +1,10 @@
 # One made-up sentence, checked against a hand calculation, then one real row.
 # The made-up one has to match before the novels are scored.
 
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+
 from model import apply_vocab, context_mass, counts, probability, vocabulary
 
 # a b a b a b
@@ -64,4 +68,4 @@ def first_real_row(path):
 
 
 if __name__ == "__main__":
-    first_real_row("data/pride.tokens")
+    first_real_row(str(ROOT / "data" / "pride.tokens"))

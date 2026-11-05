@@ -6,7 +6,7 @@ from pathlib import Path
 
 from model import apply_vocab, counts, perplexity, vocabulary
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent
 ALPHAS = [0.1, 0.2, 0.4, 0.6, 0.8]
 SIZES = [2000, 10000, 50000]
 DEV_AT = 50000
