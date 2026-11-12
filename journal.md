@@ -54,7 +54,7 @@ Then we tried a real history. On the first 2,000 tokens of Pride and Prejudice, 
 
 We ran the grid on both books. Alpha is chosen on the development slice at that training size. The test slice is scored after the choice and does not change it. Each book is one contiguous prefix, so we do not have ten random splits and we are not going to pretend a single split is a significance test.
 
-The full grid is in results/sweep.csv. The choice is in results/chosen.csv. The plot is results/test_perplexity.svg, and the dashed line is 0.4. The runs finished on 18 September. We spent the next few days checking that the 0.4 row was still in every cell and that the UNK rate sat next to the perplexity.
+The full grid is in results/sweep.csv. The choice is in results/chosen.csv. The figure is results/fig1_perplexity.png, where the dashed line is 0.4. The runs finished on 18 September. We spent the next few days checking that the 0.4 row was still in every cell and that the UNK rate sat next to the perplexity.
 
 | Book | Training tokens | Chosen on dev | Chosen test pp | 0.4 test pp | Test UNK rate | Vocab |
 | --- | --- | --- | --- | --- | --- | --- |
