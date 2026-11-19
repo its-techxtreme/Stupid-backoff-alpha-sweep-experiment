@@ -5,6 +5,7 @@ import csv
 from pathlib import Path
 
 from model import apply_vocab, counts, perplexity, vocabulary
+from make_fig1 import main as make_figure
 
 ROOT = Path(__file__).resolve().parent.parent
 ALPHAS = [0.1, 0.2, 0.4, 0.6, 0.8]
@@ -96,59 +97,6 @@ def write_csv(path, rows):
         w.writerows(rows)
 
 
-def plot(rows):
-    # test perplexity against alpha. one line per book and training size.
-    width, height = 640, 440
-    pad_l, pad_b, pad_r, pad_t = 58, 52, 16, 42
-    vals = [r["test_pp"] for r in rows]
-    lo, hi = min(vals), max(vals)
-    if hi == lo:
-        hi = lo + 1
-    colors = {
-        ("pride", 2000): "#b42318",
-        ("pride", 10000): "#d97706",
-        ("pride", 50000): "#1d4e89",
-        ("emma", 2000): "#9f1239",
-        ("emma", 10000): "#0f766e",
-        ("emma", 50000): "#3f6212",
-    }
-
-    def x(alpha):
-        return pad_l + (alpha - 0.1) / 0.7 * (width - pad_l - pad_r)
-
-    def y(pp):
-        return pad_t + (hi - pp) / (hi - lo) * (height - pad_t - pad_b)
-
-    parts = [
-        '<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d">' % (width, height),
-        '<rect width="100%" height="100%" fill="#fbf7f0"/>',
-        '<text x="320" y="28" text-anchor="middle" font-family="Georgia" font-size="16">test perplexity against alpha</text>',
-    ]
-    for tick in (0.1, 0.2, 0.4, 0.6, 0.8):
-        parts.append('<line x1="%.1f" y1="%d" x2="%.1f" y2="%d" stroke="#e4d7c5"/>' % (
-            x(tick), pad_t, x(tick), height - pad_b))
-        parts.append('<text x="%.1f" y="%d" text-anchor="middle" font-size="11" font-family="Georgia">%.1f</text>' % (
-            x(tick), height - 18, tick))
-    # mark 0.4 a bit darker
-    parts.append('<line x1="%.1f" y1="%d" x2="%.1f" y2="%d" stroke="#7c5c3b" stroke-dasharray="3 3"/>' % (
-        x(0.4), pad_t, x(0.4), height - pad_b))
-    keys = sorted({(r["book"], r["train_tokens"]) for r in rows})
-    for key in keys:
-        group = sorted([r for r in rows if (r["book"], r["train_tokens"]) == key], key=lambda r: r["alpha"])
-        pts = " ".join("%.1f,%.1f" % (x(r["alpha"]), y(r["test_pp"])) for r in group)
-        parts.append('<polyline fill="none" stroke="%s" stroke-width="2" points="%s"/>' % (colors[key], pts))
-    lx = 70
-    for key in keys:
-        book, size = key
-        parts.append('<text x="%d" y="%d" font-size="11" font-family="Georgia" fill="%s">%s %d</text>' % (
-            lx, height - 4, colors[key], book, size))
-        lx += 90
-    parts.append("</svg>")
-    path = ROOT / "results" / "test_perplexity.svg"
-    path.write_text("\n".join(parts), encoding="utf-8")
-    print("wrote", path)
-
-
 def main():
     rows = []
     for name in ("pride", "emma"):
@@ -159,7 +107,7 @@ def main():
     for r in picks:
         print("chosen", r["book"], r["train_tokens"], "alpha", r["chosen_alpha"],
               "test", r["chosen_test_pp"], "0.4 test", r["alpha_0_4_test_pp"])
-    plot(rows)
+    make_figure()
 
 
 if __name__ == "__main__":
